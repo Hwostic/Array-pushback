@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include<cstring>
-//Конструктор копирования
+
+//Конструктор перемещения + метод pushback
 using namespace std;
 
 
@@ -13,7 +14,13 @@ public:
 	Array(int capacity) :arr(new int[capacity]), size(0), capacity(capacity) {
 		cout << "Конструктор с параметром " << this << endl;
 	}
+	
+	
+	//конструктор по умолчанию
 	Array() :Array(5) {}
+
+
+
 	//Конструктор копирования  //arr(array.arr)
 	Array(const Array& array) :arr(new int[array.capacity]), size(array.size), capacity(array.capacity) {
 		for (int i = 0; i < size; i++)
@@ -84,17 +91,37 @@ private:
 
 };
 
+Array arrayFactory(int arrSize) // функция создающая массив на заданное количество элементов
+
+{
+	//создаем новый массив с размером arrSize (для старого стандарта)
+	Array arr(arrSize);
+	arr.randomize();
+	return arr;
+}
 
 int main() {
 	setlocale(LC_ALL, "ru");
 
 	Array array1(10);
 
-	array1.pushback(10);
-	array1.pushback(10);
-	array1.pushback(10);
-	array1.randomize();
-	array1.print();
+	Array array2 = arrayFactory(10); //вызываем функцию arrayFactory, и создаем массив на 10 элементов, которые хранятся в объекте array2;
+	
+	int x = 42;
+	int& refX = x;
+	cout << refX<< endl;
+
+	const int& cRef = x;
+	const int& cRefX = x + 24;
+	cout << cRefX << endl;
+
+	int&& cRefX = x+24; //благодаря двум аперсантам можно создать неконстантную ссылку на временные переменные (rvalue ссылка)
+
+	//array1.pushback(10);
+	//array1.pushback(10);
+	//array1.pushback(10);
+	//array1.randomize();
+	//array1.print();
 
 
 }
